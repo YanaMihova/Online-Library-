@@ -1,54 +1,38 @@
 <?php 
+
 session_start();
-$_SESSION["loginstatus"] = "";
+include 'db.php';
+$username='';
+if (isset($_POST['username'])) {
+	$username = mysqli_real_escape_string($con,trim($_POST['username']));
+}
+$password = md5($_POST["password"]);
 
- ?>
+$sql = "SELECT id,username,name,admin,address,email from `users` WHERE username='$username' AND  password = '$password'";
+$query = mysqli_query($con, $sql);
 
-<!doctype html>
-<html>
-	<head>
-		<title>Login</title>
-		<link rel="stylesheet" type="text/css" href="css/style1.css">
-	</head>
-	
-<body>
-		<div id="wrapper">
-		<div id="header">
-			<?php include 'includes/header.php';?>
-		</div>
-	<div id="nav">
-		<?php include 'includes/navi.php';?>
-	</div>
+$_SESSION['error'] = false;
+$_SESSION['error_message'] = '';
 
-	<div id="contentSection">
-		<h1 align="center">Login Page</h1>
-<?php
-	if (isset($_SESSION['error']) && $_SESSION['error'] === true) {
-		echo $_SESSION['error_message'];
+if($query->num_rows === 1) {
+	$row=mysqli_fetch_assoc($query);
+	$_SESSION['loginstatus'] = true;
+	$_SESSION['user_id'] = $row['id'];
+	$_SESSION['username'] = $row['username'];
+	$_SESSION['name'] = $row['name'];
+	$_SESSION['address'] = $row['address'];
+	$_SESSION['email'] = $row['email'];
+	$_SESSION['admin'] = intval($row['admin']);
+	if ($row['admin'] == 1) {
+		header("Location: ../admin.php");
+	} else {
+		header("Location: ../books.php");
 	}
+}else{
+	$_SESSION['loginstatus'] = false;
+	$_SESSION['error'] = true;
+	$_SESSION['error_message'] = 'Invalid username or password';
+	header("Location: ../login.php");
+}
+
 ?>
-<form action="php/login.php" method="post">
-<table>
-	<caption>Please fill in the login form</caption>
-	<tr>
-		<td>userame</td>
-		<td><input type="text" name="username"></td>
-	</tr>
-	<tr>
-		<td>Password</td>
-		<td><input type="password" name="password"></td>
-	</tr>
-	
-	<tr>
-		<td></td>
-		<td style="float:right;"><input type="Submit" name="Login" value="Login"></td>
-	</tr>
-</table>
-</form>
-	</div>
-	<div id="footer">
-		<?php include 'includes/footer.php';?>		
-	</div>
-	</div>
-	</body>
-</html>	

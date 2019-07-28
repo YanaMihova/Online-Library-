@@ -1,11 +1,8 @@
-<?php 
-session_start();
-?>
 <!doctype html>
 <html>
 	<head>
 		<title>contact</title>
-		<link rel="stylesheet" type="text/css" href="css/style1.css">
+		<link rel="stylesheet" type="text/css" href="../css/style1.css">
 
 
 
@@ -36,6 +33,8 @@ document.getElementById("messError")
 }
 </script>
 	</head>
+	
+
 	<body>
 		<div id="wrapper">
 		<div id="header">
@@ -83,7 +82,7 @@ rows="10" name="message">
 </tr>
 <tr>
 <td></td>
-<td><input type="Submit" name="submit"name="send" value="send"></td>
+<td><input type="Submit" name="submit" value="submit"></td>
 <td class="red" id="messError"></td>
 
 </tr>
@@ -99,7 +98,7 @@ rows="10" name="message">
     }else{
     
     // send mail
-    mail("yana.todorova8512@gmail.com",$subject,$message,"From: $from\n");
+    mail("baajour2000@yahoo.com",$subject,$message,"From: $from\n");
     echo "<p style=text-align:center>Thank you for contacting us</p>";
     }
   }

@@ -1,51 +1,38 @@
+<?php 
+include 'db.php';
+$username = $_POST['username'];
+/*$sql = "delete from users
+where username = '$username'";*/
 
-<?php
-session_start();
-?>
-<!doctype html>
-<html>
-	<head>
-		<title>removeuser</title>
-		<link rel="stylesheet" type="text/css" href="css/style1.css">
-	</head>
-	
-<body>
-		<div id="wrapper">
-		<div id="header">
-			<?php include 'includes/header.php';?>	
-		</div>
-<div id="nav">
-<?php include 'includes/navi.php';?>
-	</div>
-	<div id="contentSection">
-		<h1 align="center">Delete user</h1>
-		<div style="color: #ff0000; text-align: center;"><h2>
-		<?php
-		if (isset($_SESSION['error']) && $_SESSION['error'] === true) {
-			echo $_SESSION['error_message'];
-			 $_SESSION['error'] === false;
-			 $_SESSION['error_message']='';
-		}
-		?></h2>
-		</div>
-<form action="php/removeUser.php" method="post">
-<table>
-	<caption>Delete user</caption>
-	<tr>
-		<td>user Name</td>
-		<td><input type="text" name="username"></td>
-	</tr>
-	
-	<tr>
-		<td></td>
-		<td style="float:right;"><input type="Submit" value="remove"></td>
-	</tr>
-</table>
-</form>
-	</div>
-	<div id="footer">
-		<?php include 'includes/footer.php';?>	
-	</div>
-	</div>
-	</body>
-</html>	
+
+/*mysqli_query($con, $sql);*/
+
+/*$_SESSION['error'] = false;
+$_SESSION['error_message'] = '';
+
+if (empty($username) || strlen($username) < 3) {
+	$_SESSION['error'] = true;
+	$_SESSION['error_message'] .= 'Username must be at least 3 charater in length<br>';	
+} else {
+	$sql = "SELECT id from `users` WHERE username='$username'";
+	$query = mysqli_query($con, $sql);
+	if($query->num_rows !== 0) {
+		$_SESSION['error'] = true;
+		$_SESSION['error_message'] .= 'This username is already taken.<br>';	
+	}
+}*/
+
+
+if (!$_SESSION['error']) {
+	$sql = "delete from users where username = '$username'";
+	if (!mysqli_query($con,$sql)) {
+		die('Error: ' . mysqli_error($con));
+	} else { 
+	  	header("Location: ../system_message.php");
+	}
+} else {
+	header("Location: ../removeUser.php");
+}
+mysqli_close($con);
+
+ ?>
